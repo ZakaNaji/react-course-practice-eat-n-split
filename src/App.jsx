@@ -8,7 +8,10 @@ function App() {
       <div className="app">
         <div className="sidebar">
           <FriendList />
+          <AddFriendForm />
+          <Button>Add Friend</Button>
         </div>
+        <SplitBillForm />
       </div>
     </>
   );
@@ -42,9 +45,51 @@ const Friend = ({ friend }) => {
         </p>
       )}
       {friend.balance === 0 && <p>You and {friend.name} are even</p>}
-      <button className="button">Select</button>
+      <Button>Select</Button>
     </li>
   );
+};
+
+const AddFriendForm = () => {
+  return (
+    <form className="form-add-friend">
+      <label>Friend Name:</label>
+      <input type="text" />
+
+      <label>Image Url:</label>
+      <input type="text" />
+
+      <Button>Add</Button>
+    </form>
+  );
+};
+
+const SplitBillForm = () => {
+  return (
+    <form className="form-split-bill">
+      <h2>Split a bill with X</h2>
+      <label>Bill value</label>
+      <input type="text" />
+
+      <label>Your expense</label>
+      <input type="text" />
+
+      <label>X's expense</label>
+      <input type="text" disabled={true} />
+
+      <label>Who is paying</label>
+      <select>
+        <option value="you">You</option>
+        <option value="friend">X</option>
+      </select>
+
+      <Button>Split bill</Button>
+    </form>
+  );
+};
+
+const Button = ({ children }) => {
+  return <button className="button">{children}</button>;
 };
 
 export default App;
