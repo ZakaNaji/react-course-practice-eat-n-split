@@ -4,12 +4,18 @@ import data from "./data";
 
 function App() {
   const [showAddFriend, setShowAddFriend] = useState(false);
+  const [friends, setFriends] = useState([...data]);
+  const onAddFriend = (newFriend) => {
+    setFriends([...friends, newFriend]);
+    setShowAddFriend(false);
+  };
+
   return (
     <>
       <div className="app">
         <div className="sidebar">
-          <FriendList />
-          {showAddFriend && <AddFriendForm />}
+          <FriendList friends={friends} />
+          {showAddFriend && <AddFriendForm onAddFriend={onAddFriend} />}
           <Button onClick={() => setShowAddFriend(!showAddFriend)}>
             {!showAddFriend ? "Add Friend" : "Close"}
           </Button>
@@ -20,11 +26,11 @@ function App() {
   );
 }
 
-const FriendList = () => {
+const FriendList = ({ friends }) => {
   return (
     <>
       <ul>
-        {data.map((item) => {
+        {friends.map((item) => {
           return <Friend key={item.id} friend={item} />;
         })}
       </ul>
@@ -53,15 +59,36 @@ const Friend = ({ friend }) => {
   );
 };
 
-const AddFriendForm = () => {
+const AddFriendForm = ({ onAddFriend }) => {
+  const [friendName, setFriendName] = useState("");
+  const [image, setImage] = useState("");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!friendName || !image) return;
+    const newFriend = {
+      id: new Date().getTime(),
+      name: friendName,
+      image: image,
+      balance: 0,
+    };
+    onAddFriend(newFriend);
+  };
   return (
     <>
-      <form className="form-add-friend">
+      <form onSubmit={(e) => handleSubmit(e)} className="form-add-friend">
         <label>Friend Name:</label>
-        <input type="text" />
+        <input
+          value={friendName}
+          onChange={(e) => setFriendName(e.target.value)}
+          type="text"
+        />
 
         <label>Image Url:</label>
-        <input type="text" />
+        <input
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
+          type="text"
+        />
 
         <Button>Add</Button>
       </form>
