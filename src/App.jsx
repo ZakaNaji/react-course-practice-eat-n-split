@@ -1,35 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import data from "./data";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="app">
+        <div className="sidebar">
+          <FriendList />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+const FriendList = () => {
+  return (
+    <>
+      <ul>
+        {data.map((item) => {
+          return <Friend friend={item} />;
+        })}
+      </ul>
+    </>
+  );
+};
+
+const Friend = ({ friend }) => {
+  return (
+    <li>
+      <img src={friend.image} alt={friend.name} />
+      <h3>{friend.name}</h3>
+      {friend.balance > 0 && (
+        <p className="red">
+          You owe {friend.name} {Math.abs(friend.balance)}
+        </p>
+      )}
+      {friend.balance < 0 && (
+        <p className="green">
+          {friend.name} owes you {Math.abs(friend.balance)}
+        </p>
+      )}
+      {friend.balance === 0 && <p>You and {friend.name} are even</p>}
+      <button className="button">Select</button>
+    </li>
+  );
+};
+
+export default App;
