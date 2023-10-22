@@ -3,13 +3,16 @@ import "./App.css";
 import data from "./data";
 
 function App() {
+  const [showAddFriend, setShowAddFriend] = useState(false);
   return (
     <>
       <div className="app">
         <div className="sidebar">
           <FriendList />
-          <AddFriendForm />
-          <Button>Add Friend</Button>
+          {showAddFriend && <AddFriendForm />}
+          <Button onClick={() => setShowAddFriend(!showAddFriend)}>
+            {!showAddFriend ? "Add Friend" : "Close"}
+          </Button>
         </div>
         <SplitBillForm />
       </div>
@@ -22,7 +25,7 @@ const FriendList = () => {
     <>
       <ul>
         {data.map((item) => {
-          return <Friend friend={item} />;
+          return <Friend key={item.id} friend={item} />;
         })}
       </ul>
     </>
@@ -52,15 +55,17 @@ const Friend = ({ friend }) => {
 
 const AddFriendForm = () => {
   return (
-    <form className="form-add-friend">
-      <label>Friend Name:</label>
-      <input type="text" />
+    <>
+      <form className="form-add-friend">
+        <label>Friend Name:</label>
+        <input type="text" />
 
-      <label>Image Url:</label>
-      <input type="text" />
+        <label>Image Url:</label>
+        <input type="text" />
 
-      <Button>Add</Button>
-    </form>
+        <Button>Add</Button>
+      </form>
+    </>
   );
 };
 
@@ -88,8 +93,12 @@ const SplitBillForm = () => {
   );
 };
 
-const Button = ({ children }) => {
-  return <button className="button">{children}</button>;
+const Button = ({ children, onClick }) => {
+  return (
+    <button className="button" onClick={onClick}>
+      {children}
+    </button>
+  );
 };
 
 export default App;
