@@ -47,6 +47,7 @@ function App() {
         <SplitBillForm
           selectedFriend={selectedFriend}
           changeBalance={changeBalance}
+          key={selectedFriend?.id}
         />
       </div>
     </>
